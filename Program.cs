@@ -26,17 +26,11 @@ namespace PDF_to_DOCX_via_NuGet
                 if (fi.FullName.EndsWith(".pdf"))
                 {
                     // Convert PDF file to DOCX file 
-                    //SautinSoft.PdfFocus f = new SautinSoft.PdfFocus();
                     Microsoft.Office.Interop.Word.Document f = app.Documents.Open(fi.FullName);
-                    //f.OpenPdf(fi.FullName);
-                    if (f != null) //.PageCount > 0)
+                    if (f != null) 
                     {
                         Console.WriteLine($"Converting file {fi.FullName}");
-                        // You may choose output format between Docx and Rtf. 
-                        //f.WordOptions.Format = SautinSoft.PdfFocus.CWordOptions.eWordDocument.Docx;
                         string fullName = fi.FullName.Replace(".pdf", ".docx");
-                        //int result = f.ToWord(fullName);
-                        //var document = app.Documents.Open(fullName);
                         f.SaveAs2(fullName, WdSaveFormat.wdFormatXMLDocument, CompatibilityMode: WdCompatibilityMode.wdCurrent);
                         app.ActiveDocument.Close();
                     }
