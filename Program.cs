@@ -13,7 +13,7 @@ namespace PDF_to_DOCX_via_NuGet
         static void Main(string[] args)
         {
 
-            DirectoryInfo di = new DirectoryInfo(".");
+            DirectoryInfo di = new DirectoryInfo(args[0]);
             var files = di.GetFiles();
             Application app = new Application();
             foreach (FileInfo fi in files)
@@ -21,17 +21,18 @@ namespace PDF_to_DOCX_via_NuGet
                 if (fi.FullName.EndsWith(".pdf"))
                 {
                     // Convert PDF file to DOCX file 
-                    SautinSoft.PdfFocus f = new SautinSoft.PdfFocus();
-                    f.OpenPdf(fi.FullName);
-                    if (f.PageCount > 0)
+                    //SautinSoft.PdfFocus f = new SautinSoft.PdfFocus();
+                    Microsoft.Office.Interop.Word.Document doc = app.Documents.Open(fi.FullName);
+                    //f.OpenPdf(fi.FullName);
+                    if (doc != null)//.PageCount > 0)
                     {
                         Console.WriteLine($"Converting file {fi.FullName}");
                         // You may choose output format between Docx and Rtf. 
-                        f.WordOptions.Format = SautinSoft.PdfFocus.CWordOptions.eWordDocument.Docx;
+                        //f.WordOptions.Format = SautinSoft.PdfFocus.CWordOptions.eWordDocument.Docx;
                         string fullName = fi.FullName.Replace(".pdf", ".docx");
-                        int result = f.ToWord(fullName);
-                        var document = app.Documents.Open(fullName);
-                        document.SaveAs2(fullName, WdSaveFormat.wdFormatXMLDocument, CompatibilityMode: WdCompatibilityMode.wdCurrent);
+                        //int result = f.ToWord(fullName);
+                        //var document = app.Documents.Open(fullName);
+                        doc.SaveAs2(fullName, WdSaveFormat.wdFormatXMLDocument, CompatibilityMode: WdCompatibilityMode.wdCurrent);
                         app.ActiveDocument.Close();
                     }
                 }
